@@ -1,5 +1,6 @@
 package guru.springframework.spring6restmvc.services;
 
+import guru.springframework.spring6restmvc.entities.Beer;
 import guru.springframework.spring6restmvc.model.BeerDTO;
 import guru.springframework.spring6restmvc.model.BeerStyle;
 import lombok.extern.slf4j.Slf4j;
@@ -106,8 +107,13 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public List<BeerDTO> listBeers(){
+    public List<BeerDTO> listBeers(String beerName){
         return new ArrayList<>(beerMap.values());
+    }
+
+    @Override
+    public List<Beer> listBeersByName(String beerName) {
+        return null;
     }
 
     @Override

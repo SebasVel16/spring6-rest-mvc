@@ -1,5 +1,6 @@
 package guru.springframework.spring6restmvc.services;
 
+import guru.springframework.spring6restmvc.entities.Beer;
 import guru.springframework.spring6restmvc.model.BeerDTO;
 
 import java.util.List;
@@ -11,7 +12,9 @@ import java.util.UUID;
  */
 public interface BeerService {
 
-    List<BeerDTO> listBeers();
+    List<BeerDTO> listBeers(String beerName);
+
+    List<Beer> listBeersByName(String beerName);
 
     Optional<BeerDTO> getBeerById(UUID id);
 

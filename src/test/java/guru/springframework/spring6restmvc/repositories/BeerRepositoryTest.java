@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class BeerRepositoryTest {
+
     @Autowired
     BeerRepository beerRepository;
 

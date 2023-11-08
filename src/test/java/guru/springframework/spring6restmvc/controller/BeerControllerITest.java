@@ -23,9 +23,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.core.Is.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -46,6 +50,14 @@ class BeerControllerITest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
+
+    @Test
+    void testListBeersByName() throws Exception {
+        mockMvc.perform(get(BeerController.BEER_PATH)
+                .queryParam("beerName","IPA"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(336)));
     }
 
     @Test
@@ -117,8 +129,8 @@ class BeerControllerITest {
 
     @Test
     void testListBeers() {
-        List<BeerDTO> dtos = beerController.listBeers();
-        assertThat(dtos.size()).isEqualTo(3);
+        List<BeerDTO> dtos = beerController.listBeers(null);
+        assertThat(dtos.size()).isEqualTo(2413);
     }
 
     @Test
@@ -126,7 +138,7 @@ class BeerControllerITest {
     @Rollback
     void testEmptyList() {
         beerRepository.deleteAll();
-        List<BeerDTO> dtos = beerController.listBeers();
+        List<BeerDTO> dtos = beerController.listBeers(null);
         assertThat(dtos.size()).isEqualTo(0);
     }
 
@@ -134,7 +146,7 @@ class BeerControllerITest {
     @Rollback
     @Transactional
     void testUpdateById() {
-        BeerDTO beerDTO = beerController.listBeers().get(0);
+        BeerDTO beerDTO = beerController.listBeers(null).get(0);
 
         BeerDTO newBeer = BeerDTO.builder()
                 .beerName("new Beer").build();
