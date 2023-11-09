@@ -2,10 +2,13 @@ package guru.springframework.spring6restmvc.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -16,24 +19,33 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
-
+public class BeerOrder {
     @Id
     @GeneratedValue(generator = "UUID")
     @UuidGenerator
     @JdbcTypeCode(SqlTypes.CHAR)
     @Column(length = 36,columnDefinition = "varchar(36)", updatable = false,nullable = false)
     private UUID id;
-    private String name;
-
-    @Column(length = 255)
-    private String email;
 
     @Version
-    private Integer version;
-    private LocalDateTime createdDate;
-    private LocalDateTime updateDate;
+    private Long version;
 
-    @OneToMany(mappedBy = "customer")
-    private Set<BeerOrder> beerOrders;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp createdDate;
+
+    @UpdateTimestamp
+    private Timestamp lastModifiedDate;
+
+    public boolean isNew(){
+        return this.id == null;
+    }
+
+    private String customerRef;
+
+    @ManyToOne
+    private Customer customer;
+
+    @OneToMany(mappedBy = "beerOrder")
+    private Set<BeerOrderLine> beerOrderLines;
 }
