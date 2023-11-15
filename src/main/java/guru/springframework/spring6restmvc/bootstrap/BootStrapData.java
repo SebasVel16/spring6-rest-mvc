@@ -1,9 +1,12 @@
 package guru.springframework.spring6restmvc.bootstrap;
 
 import guru.springframework.spring6restmvc.entities.Beer;
+import guru.springframework.spring6restmvc.entities.BeerOrder;
+import guru.springframework.spring6restmvc.entities.BeerOrderShipment;
 import guru.springframework.spring6restmvc.entities.Customer;
 import guru.springframework.spring6restmvc.model.BeerCSVRecord;
 import guru.springframework.spring6restmvc.model.BeerStyle;
+import guru.springframework.spring6restmvc.repositories.BeerOrderRepository;
 import guru.springframework.spring6restmvc.repositories.BeerRepository;
 import guru.springframework.spring6restmvc.repositories.CustomerRepository;
 import guru.springframework.spring6restmvc.services.BeerCSVService;
@@ -27,6 +30,7 @@ public class BootStrapData implements CommandLineRunner {
     private final BeerCSVService beerCSVService;
     private final BeerRepository beerRepository;
     private final CustomerRepository customerRepository;
+    private final BeerOrderRepository beerOrderRepository;
 
     @Transactional
      @Override
@@ -34,6 +38,7 @@ public class BootStrapData implements CommandLineRunner {
         loadBeerData();
         loadCsvData();
         loadCustomerData();
+        loadBeerOrderData();
     }
 
     private void loadCsvData() throws FileNotFoundException {
@@ -127,6 +132,18 @@ public class BootStrapData implements CommandLineRunner {
             beerRepository.save(beer1);
             beerRepository.save(beer2);
             beerRepository.save(beer3);
+        }
+    }
+    private void loadBeerOrderData(){
+        if(beerOrderRepository.count() == 0){
+            Customer customer = customerRepository.findAll().get(0);
+            BeerOrder beerOrder = BeerOrder.builder()
+                    .customer(customer)
+                    .beerOrderShipment(BeerOrderShipment.builder().trackingNumber("12345r").build())
+                    .customerRef("test")
+                    .build();
+
+            beerOrderRepository.save(beerOrder);
         }
     }
 }
