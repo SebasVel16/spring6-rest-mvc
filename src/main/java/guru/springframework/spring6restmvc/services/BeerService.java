@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public interface BeerService {
 
-    Page<BeerDTO> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize);
+    Page<BeerDTO> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer offset, Integer pageSize);
 
     Optional<BeerDTO> getBeerById(UUID id);
 

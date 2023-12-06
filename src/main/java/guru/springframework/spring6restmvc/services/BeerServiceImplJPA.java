@@ -33,9 +33,9 @@ public class BeerServiceImplJPA implements BeerService{
 
     @Override
     public Page<BeerDTO> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory,
-                                   Integer pageNumber, Integer pageSize) {
+                                   Integer offset, Integer pageSize) {
 
-        PageRequest request = buildPageRequest(pageNumber,pageSize);
+        PageRequest request = buildPageRequest(offset,pageSize);
 
         Page<Beer> beerPage;
 
@@ -57,12 +57,12 @@ public class BeerServiceImplJPA implements BeerService{
         return beerPage.map(beerMapper::beerToBeerDto);
     }
 
-    public PageRequest buildPageRequest(Integer pageNumber, Integer pageSize){
+    public PageRequest buildPageRequest(Integer offset, Integer pageSize){
         int queryPageNumber;
         int queryPageSize;
 
-        if(pageNumber != null && pageNumber > 0){
-            queryPageNumber = pageNumber -1;
+        if(offset != null && offset > 0){
+            queryPageNumber = offset -1;
         } else {
             queryPageNumber = DEFAULT_PAGE;
         }
