@@ -14,6 +14,8 @@ public class SpringSecConfig {
 
         httpSecurity.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
             authorizationManagerRequestMatcherRegistry
+                    .requestMatchers("/v3/api-docs**", "/swagger-ui/**",  "/swagger-ui.html")
+                    .permitAll()
                     .anyRequest()
                     .authenticated();
         })

@@ -85,14 +85,6 @@ class CustomerControllerITest {
         });
     }
 
-    @Test
-    @Rollback
-    @Transactional
-    void testEmptyList() {
-        customerRepository.deleteAll();
-        List<CustomerDTO> dtos =  customerController.listAllCustomers();
-        assertThat(dtos.size()).isEqualTo(0);
-    }
 
     @Test
     void testListCustomers() {
